@@ -14,7 +14,9 @@
         <div class="block">
           <label for="wb-pos-override-type">插入位置: </label>
           <select id="wb-pos-override-type" v-model="settings.position" class="text_pole">
-            <option v-for="pos in positions" :key="pos" :value="pos">{{ pos }}</option>
+            <option v-for="opt in positionOptions" :key="opt.value" :value="opt.value">
+              {{ opt.text }}
+            </option>
           </select>
         </div>
 
@@ -34,13 +36,13 @@ import { useSettingsStore } from './settings';
 
 const { settings } = useSettingsStore();
 
-const positions: WorldbookEntry['position']['type'][] = [
-  'before_character_definition',
-  'after_character_definition',
-  'before_example_messages',
-  'after_example_messages',
-  'before_author_note',
-  'after_author_note',
-  'at_depth',
+const positionOptions: { value: WorldbookEntry['position']['type']; text: string }[] = [
+  { value: 'before_character_definition', text: '角色定义之前' },
+  { value: 'after_character_definition', text: '角色定义之后' },
+  { value: 'before_example_messages', text: '示例消息之前' },
+  { value: 'after_example_messages', text: '示例消息之后' },
+  { value: 'before_author_note', text: '作者注释之前' },
+  { value: 'after_author_note', text: '作者注释之后' },
+  { value: 'at_depth', text: '插入到指定深度' },
 ];
 </script>
