@@ -13,7 +13,7 @@
 
         <div class="block">
           <label for="wb-pos-override-type">插入位置: </label>
-          <select id="wb-pos-override-type" v-model="settings.position" class="text_pole">
+          <select id="wb-pos-override-type" v-model="settings.position" class="text_pole" :disabled="!settings.enabled">
             <option v-for="opt in positionOptions" :key="opt.value" :value="opt.value">
               {{ opt.text }}
             </option>
@@ -22,7 +22,14 @@
 
         <div v-if="settings.position === 'at_depth'" class="block">
           <label for="wb-pos-override-depth">插入深度: </label>
-          <input id="wb-pos-override-depth" v-model.number="settings.depth" type="number" class="text_pole" min="1" />
+          <input
+            id="wb-pos-override-depth"
+            v-model.number="settings.depth"
+            type="number"
+            class="text_pole"
+            min="1"
+            :disabled="!settings.enabled"
+          />
         </div>
 
         <hr class="sysHR" />

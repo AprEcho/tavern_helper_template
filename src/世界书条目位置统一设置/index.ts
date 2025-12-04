@@ -27,7 +27,15 @@ const positionMap: Record<WorldbookEntry['position']['type'], SillyTavern.Flatte
   at_depth: 6,
 };
 
-eventOn(tavern_events.WORLDINFO_ENTRIES_LOADED, lores => {
+type LoreData = {
+  globalLore: SillyTavern.FlattenedWorldInfoEntry[];
+  characterLore: SillyTavern.FlattenedWorldInfoEntry[];
+  chatLore: SillyTavern.FlattenedWorldInfoEntry[];
+  personaLore: SillyTavern.FlattenedWorldInfoEntry[];
+};
+let cachedLores: LoreData | null = null;
+
+function updateLorePositions(lores: LoreData) {
   const { settings } = useSettingsStore();
 
   if (!settings.enabled) {
@@ -42,5 +50,17 @@ eventOn(tavern_events.WORLDINFO_ENTRIES_LOADED, lores => {
     if (settings.position === 'at_depth') {
       entry.depth = settings.depth;
     }
+  }
+}
+
+eventOn(tavern_events.WORLDINFO_ENTRIES_LOADED, lores => {
+  cachedLores = lores;
+  updateLorePositions(lores);
+});
+
+const { settings } = useSettingsStore();
+watch(settings, () => {
+  if (cachedLores) {
+    updateLorePositions(cachedLores);
   }
 });
